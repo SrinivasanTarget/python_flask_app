@@ -1,8 +1,12 @@
 from kafka import KafkaProducer
 
-def test_users(kafka):
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+from test.kafka import KafkaContainer
 
-    producer.send('my-topic', b'Im Srinivasan Sekar')
 
-    producer.flush()
+def test_users():
+    with KafkaContainer() as kafka:
+        producer = KafkaProducer(bootstrap_servers=[kafka.get_bootstrap_servers()])
+
+        producer.send('my-topic', b'Im Srinivasan Sekar')
+
+        producer.flush()
